@@ -15,18 +15,19 @@ import java.io.IOException;
 public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private Context context;
+
     public MediaPlayerCore(Context context) {
         this.context = context;
-        mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.setOnErrorListener(this);
     }
 
     @Override
     public void setDataSource(DataSource dataSource) {
         release();
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnErrorListener(this);
         try {
-            mediaPlayer.setDataSource(context,Uri.parse(dataSource.getUrl()));
+            mediaPlayer.setDataSource(context, Uri.parse(dataSource.getUrl()));
         } catch (IOException e) {
             e.printStackTrace();
             if (mOnErrorListener != null) {
@@ -90,7 +91,7 @@ public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedLi
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-        Log.i("aaa",i+":"+i1);
+        Log.i("aaa", i + ":" + i1);
         return false;
     }
 }

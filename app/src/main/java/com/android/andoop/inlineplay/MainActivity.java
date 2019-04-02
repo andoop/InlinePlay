@@ -11,26 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.andoop.inlineplay.data.DataUtils;
 import com.android.andoop.inlineplay.player.DataSource;
 import com.android.andoop.inlineplay.player.InlinePlayHelper;
 import com.android.andoop.inlineplay.player.XVideoView;
 
-import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<DataSource> data;
+    private List<DataSource> data = new ArrayList<>();
     private InlinePlayHelper inlinePlayHelper = new InlinePlayHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initData();
+
         recyclerView = findViewById(R.id.recyclerview);
-        data = Arrays.asList(DataUtils.URL_LIST);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new RecyclerView.Adapter<VideoItemHolder>() {
             @NonNull
@@ -59,6 +59,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void initData() {
+        int[] raws = new int[]{
+                R.raw.video1,
+                R.raw.video2,
+                R.raw.video3,
+                R.raw.video4,
+                R.raw.video5,
+                R.raw.video6,
+                R.raw.video7,
+                R.raw.video8,
+                R.raw.video9,
+                R.raw.video10
+        };
+        data.clear();
+        for (int i = 0; i < raws.length; i++) {
+            data.add(new DataSource("视频" + i, Uri.parse("android.resource://" + getPackageName() + "/" + raws[i]).toString()));
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -81,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         XVideoView videoView;
         TextView title;
         DataSource dataSource;
-///mnt/sdcard/DCIM/Camera/VID_20190313_175759.mp4
+
         VideoItemHolder(View itemView) {
             super(itemView);
             videoView = itemView.findViewById(R.id.video_view);
@@ -90,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
         void onBind(DataSource dataSource) {
             this.dataSource = dataSource;
-            String ss = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video11).toString();
-            dataSource.setUrl(new File(ss).getAbsolutePath());
             videoView.setDataSource(dataSource);
         }
     }
