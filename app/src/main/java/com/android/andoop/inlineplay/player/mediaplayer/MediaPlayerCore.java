@@ -1,6 +1,9 @@
 package com.android.andoop.inlineplay.player.mediaplayer;
 
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.util.Log;
 import android.view.Surface;
 
 import com.android.andoop.inlineplay.player.DataSource;
@@ -9,17 +12,21 @@ import com.android.andoop.inlineplay.player.XPlayer;
 
 import java.io.IOException;
 
-public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedListener {
+public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
     private MediaPlayer mediaPlayer = new MediaPlayer();
-
-    public MediaPlayerCore() {
+    private Context context;
+    public MediaPlayerCore(Context context) {
+        this.context = context;
         mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnErrorListener(this);
     }
 
     @Override
     public void setDataSource(DataSource dataSource) {
+        release();
+        mediaPlayer = new MediaPlayer();
         try {
-            mediaPlayer.setDataSource(dataSource.getUrl());
+            mediaPlayer.setDataSource(context,Uri.parse(dataSource.getUrl()));
         } catch (IOException e) {
             e.printStackTrace();
             if (mOnErrorListener != null) {
@@ -39,6 +46,11 @@ public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedLi
     }
 
     @Override
+    public void prepare() {
+        mediaPlayer.prepareAsync();
+    }
+
+    @Override
     public void start() {
         mediaPlayer.start();
     }
@@ -55,6 +67,7 @@ public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedLi
 
     @Override
     public void release() {
+        mediaPlayer.reset();
         mediaPlayer.release();
     }
 
@@ -68,5 +81,16 @@ public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedLi
         if (mOnPreparedListener != null) {
             mOnPreparedListener.onPrepared(this);
         }
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+        Log.i("aaa",i+":"+i1);
+        return false;
     }
 }

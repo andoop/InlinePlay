@@ -7,6 +7,8 @@ public abstract class XPlayer {
 
     public abstract void setSurface(Surface surface);
 
+    public abstract void prepare();
+
     public abstract void setVolume(float volume);
 
     public abstract void start();
@@ -18,6 +20,8 @@ public abstract class XPlayer {
     public abstract void release();
 
     public abstract void seek(int msec);
+
+    public abstract boolean isPlaying();
 
     public interface OnPreparedListener {
         void onPrepared(XPlayer mp);
