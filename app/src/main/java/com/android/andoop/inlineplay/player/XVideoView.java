@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-public class XVideoView extends FrameLayout implements IVideoView, VideoViewManager.VideoViewHolder {
+public class XVideoView extends AspectRatioFrameLayout implements IVideoView, VideoViewManager.VideoViewHolder {
     private VideoViewManager videoViewManager;
     private boolean isVideoViewAttached;
     private DataSource dataSource;

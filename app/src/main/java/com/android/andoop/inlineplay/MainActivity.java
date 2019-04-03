@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         VideoItemHolder(View itemView) {
             super(itemView);
             videoView = itemView.findViewById(R.id.video_view);
+            videoView.setAspectRatio(16/9f);
             title = itemView.findViewById(R.id.title);
         }
 
