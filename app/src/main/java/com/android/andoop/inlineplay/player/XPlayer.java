@@ -94,4 +94,14 @@ public abstract class XPlayer {
     public void setOnTickListener(OnTickListener onTickListener) {
         this.mOnTickListener = onTickListener;
     }
+
+    protected OnVideoSizeChangedListener mOnVideoSizeChangedListener;
+
+    public interface OnVideoSizeChangedListener {
+        void onVideoSizeChanged(XPlayer mp, int w, int h);
+    }
+
+    public void setOnVideoSizeChangedListener(OnVideoSizeChangedListener onVideoSizeChangedListener) {
+        this.mOnVideoSizeChangedListener = onVideoSizeChangedListener;
+    }
 }

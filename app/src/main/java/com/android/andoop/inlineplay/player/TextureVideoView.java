@@ -10,6 +10,9 @@ import com.android.andoop.inlineplay.player.mediaplayer.MediaPlayerCore;
 
 class TextureVideoView extends TextureView implements IVideoView {
     private XPlayer player = new MediaPlayerCore(getContext());
+    private ScalableType scalableType = ScalableType.FIT_XY;
+    private Size videoSize;
+    private Size viewSize;
 
     public TextureVideoView(Context context) {
         super(context);
@@ -22,6 +25,13 @@ class TextureVideoView extends TextureView implements IVideoView {
     }
 
     private void init() {
+        player.setOnVideoSizeChangedListener(new XPlayer.OnVideoSizeChangedListener() {
+            @Override
+            public void onVideoSizeChanged(XPlayer mp, int w, int h) {
+                videoSize = new Size(w, h);
+                updateScale();
+            }
+        });
         setSurfaceTextureListener(new SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
@@ -30,7 +40,8 @@ class TextureVideoView extends TextureView implements IVideoView {
 
             @Override
             public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-
+                viewSize = new Size(i, i1);
+                updateScale();
             }
 
             @Override
@@ -43,6 +54,17 @@ class TextureVideoView extends TextureView implements IVideoView {
 
             }
         });
+    }
+
+    private void updateScale() {
+        if (videoSize != null) {
+            if(viewSize==null){
+                viewSize = new Size(getWidth(),getHeight());
+            }
+            setTransform(new ScaleManager(viewSize, videoSize).getScaleMatrix(scalableType));
+            requestLayout();
+            invalidate();
+        }
     }
 
     @Override
@@ -74,5 +96,10 @@ class TextureVideoView extends TextureView implements IVideoView {
     @Override
     public boolean isPlaying() {
         return player.isPlaying();
+    }
+
+    @Override
+    public void setScalebleType(ScalableType scalebleType) {
+        this.scalableType = scalebleType;
     }
 }

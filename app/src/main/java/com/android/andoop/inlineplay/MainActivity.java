@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.andoop.inlineplay.player.DataSource;
 import com.android.andoop.inlineplay.player.InlinePlayHelper;
+import com.android.andoop.inlineplay.player.ScalableType;
 import com.android.andoop.inlineplay.player.XVideoView;
 
 import java.util.ArrayList;
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             super(itemView);
             videoView = itemView.findViewById(R.id.video_view);
             videoView.setAspectRatio(16/9f);
+            videoView.setScalebleType(ScalableType.FIT_CENTER);
             title = itemView.findViewById(R.id.title);
         }
 

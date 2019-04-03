@@ -10,4 +10,6 @@ public interface IVideoView {
     void pauseVideo();
 
     boolean isPlaying();
+
+    void setScalebleType(ScalableType scalebleType);
 }

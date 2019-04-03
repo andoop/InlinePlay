@@ -12,7 +12,7 @@ import com.android.andoop.inlineplay.player.XPlayer;
 
 import java.io.IOException;
 
-public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
+public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnVideoSizeChangedListener {
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private Context context;
 
@@ -26,6 +26,7 @@ public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedLi
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnErrorListener(this);
+        mediaPlayer.setOnVideoSizeChangedListener(this);
         try {
             mediaPlayer.setDataSource(context, Uri.parse(dataSource.getUrl()));
         } catch (IOException e) {
@@ -93,5 +94,12 @@ public class MediaPlayerCore extends XPlayer implements MediaPlayer.OnPreparedLi
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
         Log.i("aaa", i + ":" + i1);
         return false;
+    }
+
+    @Override
+    public void onVideoSizeChanged(MediaPlayer mediaPlayer, int i, int i1) {
+        if (mOnVideoSizeChangedListener != null) {
+            mOnVideoSizeChangedListener.onVideoSizeChanged(this, i, i1);
+        }
     }
 }

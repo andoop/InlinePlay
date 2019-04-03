@@ -63,6 +63,11 @@ public class VideoViewManager implements IVideoView {
         return videoView.isPlaying();
     }
 
+    @Override
+    public void setScalebleType(ScalableType scalebleType) {
+        videoView.setScalebleType(scalebleType);
+    }
+
     public interface VideoViewHolder {
         FrameLayout getHolder();
 
