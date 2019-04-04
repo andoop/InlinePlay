@@ -94,6 +94,9 @@ public class InlinePlayHelper extends RecyclerView.OnScrollListener {
     }
 
     public void onResume() {
+        if(playingView!=null){
+            playingView.foucus();
+        }
         if (playingView != null && !playingView.isPlaying()) {
             playingView.playVideo();
         }
