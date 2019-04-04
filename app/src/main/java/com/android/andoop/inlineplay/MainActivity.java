@@ -80,15 +80,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        inlinePlayHelper.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        inlinePlayHelper.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        inlinePlayHelper.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        inlinePlayHelper.onPause();
     }
 
     @Override
@@ -108,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
             videoView.setAspectRatio(16/9f);
             videoView.setScalebleType(ScalableType.FIT_CENTER);
             title = itemView.findViewById(R.id.title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FullScreenActivity.openInFullScreen(view.getContext(),dataSource,true);
+                }
+            });
         }
 
         void onBind(DataSource dataSource) {

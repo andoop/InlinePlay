@@ -13,6 +13,8 @@ class TextureVideoView extends TextureView implements IVideoView {
     private ScalableType scalableType = ScalableType.FIT_XY;
     private Size videoSize;
     private Size viewSize;
+    private SurfaceTexture cachedSurfaceTexture;
+    private boolean isReleased = true;
 
     public TextureVideoView(Context context) {
         super(context);
@@ -35,7 +37,14 @@ class TextureVideoView extends TextureView implements IVideoView {
         setSurfaceTextureListener(new SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-                player.setSurface(new Surface(surfaceTexture));
+                if (isReleased) {
+                    cachedSurfaceTexture = surfaceTexture;
+                } else if (cachedSurfaceTexture != null) {
+                    TextureVideoView.this.setSurfaceTexture(cachedSurfaceTexture);
+                    updateScale();
+                }
+                isReleased = false;
+                player.setSurface(new Surface(cachedSurfaceTexture));
             }
 
             @Override
@@ -58,9 +67,7 @@ class TextureVideoView extends TextureView implements IVideoView {
 
     private void updateScale() {
         if (videoSize != null) {
-            if(viewSize==null){
-                viewSize = new Size(getWidth(),getHeight());
-            }
+            viewSize = new Size(getWidth(), getHeight());
             setTransform(new ScaleManager(viewSize, videoSize).getScaleMatrix(scalableType));
             requestLayout();
             invalidate();
@@ -85,6 +92,7 @@ class TextureVideoView extends TextureView implements IVideoView {
 
     @Override
     public void stopVideo() {
+        isReleased = true;
         player.stop();
     }
 
@@ -101,5 +109,6 @@ class TextureVideoView extends TextureView implements IVideoView {
     @Override
     public void setScalebleType(ScalableType scalebleType) {
         this.scalableType = scalebleType;
+        updateScale();
     }
 }

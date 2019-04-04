@@ -45,11 +45,15 @@ public class XVideoView extends AspectRatioFrameLayout implements IVideoView, Vi
         this.dataSource = dataSource;
     }
 
+    public void foucus() {
+        videoViewManager.setVideoViewHolder(this);
+    }
+
     @Override
     public void playVideo() {
         videoViewManager.setVideoViewHolder(this);
         videoViewManager.setDataSource(dataSource);
-        if(scalebleType!=null){
+        if (scalebleType != null) {
             videoViewManager.setScalebleType(scalebleType);
         }
         videoViewManager.playVideo();
@@ -71,7 +75,7 @@ public class XVideoView extends AspectRatioFrameLayout implements IVideoView, Vi
 
     @Override
     public boolean isPlaying() {
-        if(isVideoViewAttached){
+        if (isVideoViewAttached) {
             videoViewManager.isPlaying();
         }
         return false;
@@ -80,7 +84,7 @@ public class XVideoView extends AspectRatioFrameLayout implements IVideoView, Vi
     @Override
     public void setScalebleType(ScalableType scalebleType) {
         this.scalebleType = scalebleType;
-        if(isVideoViewAttached){
+        if (isVideoViewAttached) {
             videoViewManager.setScalebleType(scalebleType);
         }
     }
