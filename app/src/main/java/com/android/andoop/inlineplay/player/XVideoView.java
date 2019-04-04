@@ -76,7 +76,7 @@ public class XVideoView extends AspectRatioFrameLayout implements IVideoView, Vi
     @Override
     public boolean isPlaying() {
         if (isVideoViewAttached) {
-            videoViewManager.isPlaying();
+            return videoViewManager.isPlaying();
         }
         return false;
     }

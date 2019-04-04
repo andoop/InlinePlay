@@ -9,8 +9,6 @@ import com.android.andoop.inlineplay.player.DataSource;
 import com.android.andoop.inlineplay.player.ScalableType;
 import com.android.andoop.inlineplay.player.XVideoView;
 
-import java.io.Serializable;
-
 public class FullScreenActivity extends AppCompatActivity {
     private static String KEY_DATASOURCE = "data_source";
     private static String KEY_CONTINTUEPLAY = "continue_play";
@@ -37,19 +35,18 @@ public class FullScreenActivity extends AppCompatActivity {
         dataSource = extras.getParcelable(KEY_DATASOURCE);
         continuePlay = extras.getBoolean(KEY_CONTINTUEPLAY, false);
         videoView.setScalebleType(ScalableType.FIT_CENTER);
-
+        videoView.setDataSource(dataSource);
         if (continuePlay) {
             videoView.foucus();
-        }else {
-            videoView.setDataSource(dataSource);
+        } else {
             videoView.playVideo();
         }
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         if (isPaused) {
             isPaused = false;
             videoView.playVideo();
@@ -57,8 +54,8 @@ public class FullScreenActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         if (videoView.isPlaying()) {
             isPaused = true;
             videoView.pauseVideo();
